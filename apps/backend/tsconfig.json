@@ -2,15 +2,17 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "../..",
     "baseUrl": ".",
     "paths": {
       "@routes/*": ["src/routes/*"],
       "@controllers/*": ["src/controllers/*"],
       "@services/*": ["src/services/*"],
       "@db": ["src/db/prisma"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@prisma/client": ["../../apps/generated/prisma-client"],
+      "@packages/*": ["../../packages/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "prisma", "../../packages/**/*"]
 }

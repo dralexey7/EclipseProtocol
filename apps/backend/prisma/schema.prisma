@@ -1,12 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../../generated/prisma-client"
 }
 
 datasource db {
@@ -31,7 +25,8 @@ model User {
 // -------------------------------- Models: Описание корабля --------------------------------
 
 model Section {
-  id          Int      @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
+  code        SectionCode @unique
   name        String
   description String
   systems     System[]
@@ -42,9 +37,9 @@ model System {
   id           Int           @id @default(autoincrement())
   name         String
   description  String
-  durability   Int
-  section      Section       @relation(fields: [section_id], references: [id])
-  section_id   Int
+  durability   Int           @default(100)
+  section      Section       @relation(fields: [section_code], references: [code])
+  section_code SectionCode
   interactions Interaction[]
   malfunctions Malfunction[]
 }
@@ -134,4 +129,12 @@ enum InteractionType {
   GHOST
   CULT
   SUPPORT
+}
+
+enum SectionCode {
+  NAVIGATION
+  INGENEER
+  MILITARY
+  ARCHIVE
+  CULINAR
 }

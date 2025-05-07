@@ -135,8 +135,10 @@ exports.Prisma.UserScalarFieldEnum = {
 
 exports.Prisma.SectionScalarFieldEnum = {
   id: 'id',
+  code: 'code',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  skill: 'skill'
 };
 
 exports.Prisma.SystemScalarFieldEnum = {
@@ -144,7 +146,7 @@ exports.Prisma.SystemScalarFieldEnum = {
   name: 'name',
   description: 'description',
   durability: 'durability',
-  section_id: 'section_id'
+  section_code: 'section_code'
 };
 
 exports.Prisma.InteractionScalarFieldEnum = {
@@ -170,7 +172,8 @@ exports.Prisma.MalfunctionScalarFieldEnum = {
   user_id: 'user_id',
   status: 'status',
   started_at: 'started_at',
-  last_updated: 'last_updated'
+  last_updated: 'last_updated',
+  system_id: 'system_id'
 };
 
 exports.Prisma.EventScalarFieldEnum = {
@@ -188,6 +191,11 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
 exports.Fraction = exports.$Enums.Fraction = {
   ALLIANCE: 'ALLIANCE',
   REBELS: 'REBELS',
@@ -198,6 +206,14 @@ exports.UserStatus = exports.$Enums.UserStatus = {
   ALIVE: 'ALIVE',
   GHOST: 'GHOST',
   INACTIVE: 'INACTIVE'
+};
+
+exports.SectionCode = exports.$Enums.SectionCode = {
+  NAVIGATION: 'NAVIGATION',
+  INGENEER: 'INGENEER',
+  MILITARY: 'MILITARY',
+  ARCHIVE: 'ARCHIVE',
+  CULINAR: 'CULINAR'
 };
 
 exports.Skills = exports.$Enums.Skills = {
@@ -212,7 +228,8 @@ exports.InteractionType = exports.$Enums.InteractionType = {
   POSITIVE: 'POSITIVE',
   NEGATIVE: 'NEGATIVE',
   GHOST: 'GHOST',
-  CULT: 'CULT'
+  CULT: 'CULT',
+  SUPPORT: 'SUPPORT'
 };
 
 exports.EventCause = exports.$Enums.EventCause = {

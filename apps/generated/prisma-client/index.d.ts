@@ -103,10 +103,22 @@ export const InteractionType: {
   POSITIVE: 'POSITIVE',
   NEGATIVE: 'NEGATIVE',
   GHOST: 'GHOST',
-  CULT: 'CULT'
+  CULT: 'CULT',
+  SUPPORT: 'SUPPORT'
 };
 
 export type InteractionType = (typeof InteractionType)[keyof typeof InteractionType]
+
+
+export const SectionCode: {
+  NAVIGATION: 'NAVIGATION',
+  INGENEER: 'INGENEER',
+  MILITARY: 'MILITARY',
+  ARCHIVE: 'ARCHIVE',
+  CULINAR: 'CULINAR'
+};
+
+export type SectionCode = (typeof SectionCode)[keyof typeof SectionCode]
 
 }
 
@@ -133,6 +145,10 @@ export const Skills: typeof $Enums.Skills
 export type InteractionType = $Enums.InteractionType
 
 export const InteractionType: typeof $Enums.InteractionType
+
+export type SectionCode = $Enums.SectionCode
+
+export const SectionCode: typeof $Enums.SectionCode
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1563,10 +1579,12 @@ export namespace Prisma {
 
   export type SystemCountOutputType = {
     interactions: number
+    malfunctions: number
   }
 
   export type SystemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     interactions?: boolean | SystemCountOutputTypeCountInteractionsArgs
+    malfunctions?: boolean | SystemCountOutputTypeCountMalfunctionsArgs
   }
 
   // Custom InputTypes
@@ -1585,6 +1603,13 @@ export namespace Prisma {
    */
   export type SystemCountOutputTypeCountInteractionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InteractionWhereInput
+  }
+
+  /**
+   * SystemCountOutputType without action
+   */
+  export type SystemCountOutputTypeCountMalfunctionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MalfunctionWhereInput
   }
 
 
@@ -2914,20 +2939,26 @@ export namespace Prisma {
 
   export type SectionMinAggregateOutputType = {
     id: number | null
+    code: $Enums.SectionCode | null
     name: string | null
     description: string | null
+    skill: $Enums.Skills | null
   }
 
   export type SectionMaxAggregateOutputType = {
     id: number | null
+    code: $Enums.SectionCode | null
     name: string | null
     description: string | null
+    skill: $Enums.Skills | null
   }
 
   export type SectionCountAggregateOutputType = {
     id: number
+    code: number
     name: number
     description: number
+    skill: number
     _all: number
   }
 
@@ -2942,20 +2973,26 @@ export namespace Prisma {
 
   export type SectionMinAggregateInputType = {
     id?: true
+    code?: true
     name?: true
     description?: true
+    skill?: true
   }
 
   export type SectionMaxAggregateInputType = {
     id?: true
+    code?: true
     name?: true
     description?: true
+    skill?: true
   }
 
   export type SectionCountAggregateInputType = {
     id?: true
+    code?: true
     name?: true
     description?: true
+    skill?: true
     _all?: true
   }
 
@@ -3047,8 +3084,10 @@ export namespace Prisma {
 
   export type SectionGroupByOutputType = {
     id: number
+    code: $Enums.SectionCode
     name: string
     description: string
+    skill: $Enums.Skills
     _count: SectionCountAggregateOutputType | null
     _avg: SectionAvgAggregateOutputType | null
     _sum: SectionSumAggregateOutputType | null
@@ -3072,31 +3111,39 @@ export namespace Prisma {
 
   export type SectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    code?: boolean
     name?: boolean
     description?: boolean
+    skill?: boolean
     systems?: boolean | Section$systemsArgs<ExtArgs>
     _count?: boolean | SectionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["section"]>
 
   export type SectionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    code?: boolean
     name?: boolean
     description?: boolean
+    skill?: boolean
   }, ExtArgs["result"]["section"]>
 
   export type SectionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    code?: boolean
     name?: boolean
     description?: boolean
+    skill?: boolean
   }, ExtArgs["result"]["section"]>
 
   export type SectionSelectScalar = {
     id?: boolean
+    code?: boolean
     name?: boolean
     description?: boolean
+    skill?: boolean
   }
 
-  export type SectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description", ExtArgs["result"]["section"]>
+  export type SectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "skill", ExtArgs["result"]["section"]>
   export type SectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     systems?: boolean | Section$systemsArgs<ExtArgs>
     _count?: boolean | SectionCountOutputTypeDefaultArgs<ExtArgs>
@@ -3111,8 +3158,10 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      code: $Enums.SectionCode
       name: string
       description: string
+      skill: $Enums.Skills
     }, ExtArgs["result"]["section"]>
     composites: {}
   }
@@ -3538,8 +3587,10 @@ export namespace Prisma {
    */
   interface SectionFieldRefs {
     readonly id: FieldRef<"Section", 'Int'>
+    readonly code: FieldRef<"Section", 'SectionCode'>
     readonly name: FieldRef<"Section", 'String'>
     readonly description: FieldRef<"Section", 'String'>
+    readonly skill: FieldRef<"Section", 'Skills'>
   }
     
 
@@ -3985,13 +4036,11 @@ export namespace Prisma {
   export type SystemAvgAggregateOutputType = {
     id: number | null
     durability: number | null
-    section_id: number | null
   }
 
   export type SystemSumAggregateOutputType = {
     id: number | null
     durability: number | null
-    section_id: number | null
   }
 
   export type SystemMinAggregateOutputType = {
@@ -3999,7 +4048,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     durability: number | null
-    section_id: number | null
+    section_code: $Enums.SectionCode | null
   }
 
   export type SystemMaxAggregateOutputType = {
@@ -4007,7 +4056,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     durability: number | null
-    section_id: number | null
+    section_code: $Enums.SectionCode | null
   }
 
   export type SystemCountAggregateOutputType = {
@@ -4015,7 +4064,7 @@ export namespace Prisma {
     name: number
     description: number
     durability: number
-    section_id: number
+    section_code: number
     _all: number
   }
 
@@ -4023,13 +4072,11 @@ export namespace Prisma {
   export type SystemAvgAggregateInputType = {
     id?: true
     durability?: true
-    section_id?: true
   }
 
   export type SystemSumAggregateInputType = {
     id?: true
     durability?: true
-    section_id?: true
   }
 
   export type SystemMinAggregateInputType = {
@@ -4037,7 +4084,7 @@ export namespace Prisma {
     name?: true
     description?: true
     durability?: true
-    section_id?: true
+    section_code?: true
   }
 
   export type SystemMaxAggregateInputType = {
@@ -4045,7 +4092,7 @@ export namespace Prisma {
     name?: true
     description?: true
     durability?: true
-    section_id?: true
+    section_code?: true
   }
 
   export type SystemCountAggregateInputType = {
@@ -4053,7 +4100,7 @@ export namespace Prisma {
     name?: true
     description?: true
     durability?: true
-    section_id?: true
+    section_code?: true
     _all?: true
   }
 
@@ -4148,7 +4195,7 @@ export namespace Prisma {
     name: string
     description: string
     durability: number
-    section_id: number
+    section_code: $Enums.SectionCode
     _count: SystemCountAggregateOutputType | null
     _avg: SystemAvgAggregateOutputType | null
     _sum: SystemSumAggregateOutputType | null
@@ -4175,9 +4222,10 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     durability?: boolean
-    section_id?: boolean
+    section_code?: boolean
     section?: boolean | SectionDefaultArgs<ExtArgs>
     interactions?: boolean | System$interactionsArgs<ExtArgs>
+    malfunctions?: boolean | System$malfunctionsArgs<ExtArgs>
     _count?: boolean | SystemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["system"]>
 
@@ -4186,7 +4234,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     durability?: boolean
-    section_id?: boolean
+    section_code?: boolean
     section?: boolean | SectionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["system"]>
 
@@ -4195,7 +4243,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     durability?: boolean
-    section_id?: boolean
+    section_code?: boolean
     section?: boolean | SectionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["system"]>
 
@@ -4204,13 +4252,14 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     durability?: boolean
-    section_id?: boolean
+    section_code?: boolean
   }
 
-  export type SystemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "durability" | "section_id", ExtArgs["result"]["system"]>
+  export type SystemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "durability" | "section_code", ExtArgs["result"]["system"]>
   export type SystemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     section?: boolean | SectionDefaultArgs<ExtArgs>
     interactions?: boolean | System$interactionsArgs<ExtArgs>
+    malfunctions?: boolean | System$malfunctionsArgs<ExtArgs>
     _count?: boolean | SystemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SystemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4225,13 +4274,14 @@ export namespace Prisma {
     objects: {
       section: Prisma.$SectionPayload<ExtArgs>
       interactions: Prisma.$InteractionPayload<ExtArgs>[]
+      malfunctions: Prisma.$MalfunctionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
       description: string
       durability: number
-      section_id: number
+      section_code: $Enums.SectionCode
     }, ExtArgs["result"]["system"]>
     composites: {}
   }
@@ -4628,6 +4678,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     section<T extends SectionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SectionDefaultArgs<ExtArgs>>): Prisma__SectionClient<$Result.GetResult<Prisma.$SectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     interactions<T extends System$interactionsArgs<ExtArgs> = {}>(args?: Subset<T, System$interactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InteractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    malfunctions<T extends System$malfunctionsArgs<ExtArgs> = {}>(args?: Subset<T, System$malfunctionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MalfunctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4661,7 +4712,7 @@ export namespace Prisma {
     readonly name: FieldRef<"System", 'String'>
     readonly description: FieldRef<"System", 'String'>
     readonly durability: FieldRef<"System", 'Int'>
-    readonly section_id: FieldRef<"System", 'Int'>
+    readonly section_code: FieldRef<"System", 'SectionCode'>
   }
     
 
@@ -5082,6 +5133,30 @@ export namespace Prisma {
   }
 
   /**
+   * System.malfunctions
+   */
+  export type System$malfunctionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Malfunction
+     */
+    select?: MalfunctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Malfunction
+     */
+    omit?: MalfunctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MalfunctionInclude<ExtArgs> | null
+    where?: MalfunctionWhereInput
+    orderBy?: MalfunctionOrderByWithRelationInput | MalfunctionOrderByWithRelationInput[]
+    cursor?: MalfunctionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MalfunctionScalarFieldEnum | MalfunctionScalarFieldEnum[]
+  }
+
+  /**
    * System without action
    */
   export type SystemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5285,7 +5360,7 @@ export namespace Prisma {
     id: number
     name: string
     description: string
-    skill: $Enums.Skills
+    skill: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     system_id: number
@@ -5381,7 +5456,7 @@ export namespace Prisma {
       id: number
       name: string
       description: string
-      skill: $Enums.Skills
+      skill: $Enums.Skills | null
       type: $Enums.InteractionType
       malfunction: string
       system_id: number
@@ -7403,6 +7478,7 @@ export namespace Prisma {
     event_id: number | null
     interaction_id: number | null
     user_id: number | null
+    system_id: number | null
   }
 
   export type MalfunctionSumAggregateOutputType = {
@@ -7410,6 +7486,7 @@ export namespace Prisma {
     event_id: number | null
     interaction_id: number | null
     user_id: number | null
+    system_id: number | null
   }
 
   export type MalfunctionMinAggregateOutputType = {
@@ -7420,6 +7497,7 @@ export namespace Prisma {
     status: $Enums.MalfunctionStatus | null
     started_at: Date | null
     last_updated: Date | null
+    system_id: number | null
   }
 
   export type MalfunctionMaxAggregateOutputType = {
@@ -7430,6 +7508,7 @@ export namespace Prisma {
     status: $Enums.MalfunctionStatus | null
     started_at: Date | null
     last_updated: Date | null
+    system_id: number | null
   }
 
   export type MalfunctionCountAggregateOutputType = {
@@ -7440,6 +7519,7 @@ export namespace Prisma {
     status: number
     started_at: number
     last_updated: number
+    system_id: number
     _all: number
   }
 
@@ -7449,6 +7529,7 @@ export namespace Prisma {
     event_id?: true
     interaction_id?: true
     user_id?: true
+    system_id?: true
   }
 
   export type MalfunctionSumAggregateInputType = {
@@ -7456,6 +7537,7 @@ export namespace Prisma {
     event_id?: true
     interaction_id?: true
     user_id?: true
+    system_id?: true
   }
 
   export type MalfunctionMinAggregateInputType = {
@@ -7466,6 +7548,7 @@ export namespace Prisma {
     status?: true
     started_at?: true
     last_updated?: true
+    system_id?: true
   }
 
   export type MalfunctionMaxAggregateInputType = {
@@ -7476,6 +7559,7 @@ export namespace Prisma {
     status?: true
     started_at?: true
     last_updated?: true
+    system_id?: true
   }
 
   export type MalfunctionCountAggregateInputType = {
@@ -7486,6 +7570,7 @@ export namespace Prisma {
     status?: true
     started_at?: true
     last_updated?: true
+    system_id?: true
     _all?: true
   }
 
@@ -7583,6 +7668,7 @@ export namespace Prisma {
     status: $Enums.MalfunctionStatus
     started_at: Date
     last_updated: Date
+    system_id: number
     _count: MalfunctionCountAggregateOutputType | null
     _avg: MalfunctionAvgAggregateOutputType | null
     _sum: MalfunctionSumAggregateOutputType | null
@@ -7612,9 +7698,11 @@ export namespace Prisma {
     status?: boolean
     started_at?: boolean
     last_updated?: boolean
+    system_id?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
     interaction?: boolean | InteractionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    system?: boolean | SystemDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["malfunction"]>
 
   export type MalfunctionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7625,9 +7713,11 @@ export namespace Prisma {
     status?: boolean
     started_at?: boolean
     last_updated?: boolean
+    system_id?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
     interaction?: boolean | InteractionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    system?: boolean | SystemDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["malfunction"]>
 
   export type MalfunctionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7638,9 +7728,11 @@ export namespace Prisma {
     status?: boolean
     started_at?: boolean
     last_updated?: boolean
+    system_id?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
     interaction?: boolean | InteractionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    system?: boolean | SystemDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["malfunction"]>
 
   export type MalfunctionSelectScalar = {
@@ -7651,23 +7743,27 @@ export namespace Prisma {
     status?: boolean
     started_at?: boolean
     last_updated?: boolean
+    system_id?: boolean
   }
 
-  export type MalfunctionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "event_id" | "interaction_id" | "user_id" | "status" | "started_at" | "last_updated", ExtArgs["result"]["malfunction"]>
+  export type MalfunctionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "event_id" | "interaction_id" | "user_id" | "status" | "started_at" | "last_updated" | "system_id", ExtArgs["result"]["malfunction"]>
   export type MalfunctionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
     interaction?: boolean | InteractionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    system?: boolean | SystemDefaultArgs<ExtArgs>
   }
   export type MalfunctionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
     interaction?: boolean | InteractionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    system?: boolean | SystemDefaultArgs<ExtArgs>
   }
   export type MalfunctionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
     interaction?: boolean | InteractionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    system?: boolean | SystemDefaultArgs<ExtArgs>
   }
 
   export type $MalfunctionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7676,6 +7772,7 @@ export namespace Prisma {
       event: Prisma.$EventPayload<ExtArgs>
       interaction: Prisma.$InteractionPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
+      system: Prisma.$SystemPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -7685,6 +7782,7 @@ export namespace Prisma {
       status: $Enums.MalfunctionStatus
       started_at: Date
       last_updated: Date
+      system_id: number
     }, ExtArgs["result"]["malfunction"]>
     composites: {}
   }
@@ -8082,6 +8180,7 @@ export namespace Prisma {
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     interaction<T extends InteractionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InteractionDefaultArgs<ExtArgs>>): Prisma__InteractionClient<$Result.GetResult<Prisma.$InteractionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    system<T extends SystemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SystemDefaultArgs<ExtArgs>>): Prisma__SystemClient<$Result.GetResult<Prisma.$SystemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8118,6 +8217,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Malfunction", 'MalfunctionStatus'>
     readonly started_at: FieldRef<"Malfunction", 'DateTime'>
     readonly last_updated: FieldRef<"Malfunction", 'DateTime'>
+    readonly system_id: FieldRef<"Malfunction", 'Int'>
   }
     
 
@@ -9664,8 +9764,10 @@ export namespace Prisma {
 
   export const SectionScalarFieldEnum: {
     id: 'id',
+    code: 'code',
     name: 'name',
-    description: 'description'
+    description: 'description',
+    skill: 'skill'
   };
 
   export type SectionScalarFieldEnum = (typeof SectionScalarFieldEnum)[keyof typeof SectionScalarFieldEnum]
@@ -9676,7 +9778,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     durability: 'durability',
-    section_id: 'section_id'
+    section_code: 'section_code'
   };
 
   export type SystemScalarFieldEnum = (typeof SystemScalarFieldEnum)[keyof typeof SystemScalarFieldEnum]
@@ -9711,7 +9813,8 @@ export namespace Prisma {
     user_id: 'user_id',
     status: 'status',
     started_at: 'started_at',
-    last_updated: 'last_updated'
+    last_updated: 'last_updated',
+    system_id: 'system_id'
   };
 
   export type MalfunctionScalarFieldEnum = (typeof MalfunctionScalarFieldEnum)[keyof typeof MalfunctionScalarFieldEnum]
@@ -9740,6 +9843,14 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -9800,6 +9911,20 @@ export namespace Prisma {
    * Reference to a field of type 'UserStatus[]'
    */
   export type ListEnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SectionCode'
+   */
+  export type EnumSectionCodeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SectionCode'>
+    
+
+
+  /**
+   * Reference to a field of type 'SectionCode[]'
+   */
+  export type ListEnumSectionCodeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SectionCode[]'>
     
 
 
@@ -9977,32 +10102,40 @@ export namespace Prisma {
     OR?: SectionWhereInput[]
     NOT?: SectionWhereInput | SectionWhereInput[]
     id?: IntFilter<"Section"> | number
+    code?: EnumSectionCodeFilter<"Section"> | $Enums.SectionCode
     name?: StringFilter<"Section"> | string
     description?: StringFilter<"Section"> | string
+    skill?: EnumSkillsFilter<"Section"> | $Enums.Skills
     systems?: SystemListRelationFilter
   }
 
   export type SectionOrderByWithRelationInput = {
     id?: SortOrder
+    code?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    skill?: SortOrder
     systems?: SystemOrderByRelationAggregateInput
   }
 
   export type SectionWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    code?: $Enums.SectionCode
     AND?: SectionWhereInput | SectionWhereInput[]
     OR?: SectionWhereInput[]
     NOT?: SectionWhereInput | SectionWhereInput[]
     name?: StringFilter<"Section"> | string
     description?: StringFilter<"Section"> | string
+    skill?: EnumSkillsFilter<"Section"> | $Enums.Skills
     systems?: SystemListRelationFilter
-  }, "id">
+  }, "id" | "code">
 
   export type SectionOrderByWithAggregationInput = {
     id?: SortOrder
+    code?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    skill?: SortOrder
     _count?: SectionCountOrderByAggregateInput
     _avg?: SectionAvgOrderByAggregateInput
     _max?: SectionMaxOrderByAggregateInput
@@ -10015,8 +10148,10 @@ export namespace Prisma {
     OR?: SectionScalarWhereWithAggregatesInput[]
     NOT?: SectionScalarWhereWithAggregatesInput | SectionScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Section"> | number
+    code?: EnumSectionCodeWithAggregatesFilter<"Section"> | $Enums.SectionCode
     name?: StringWithAggregatesFilter<"Section"> | string
     description?: StringWithAggregatesFilter<"Section"> | string
+    skill?: EnumSkillsWithAggregatesFilter<"Section"> | $Enums.Skills
   }
 
   export type SystemWhereInput = {
@@ -10027,9 +10162,10 @@ export namespace Prisma {
     name?: StringFilter<"System"> | string
     description?: StringFilter<"System"> | string
     durability?: IntFilter<"System"> | number
-    section_id?: IntFilter<"System"> | number
+    section_code?: EnumSectionCodeFilter<"System"> | $Enums.SectionCode
     section?: XOR<SectionScalarRelationFilter, SectionWhereInput>
     interactions?: InteractionListRelationFilter
+    malfunctions?: MalfunctionListRelationFilter
   }
 
   export type SystemOrderByWithRelationInput = {
@@ -10037,9 +10173,10 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     durability?: SortOrder
-    section_id?: SortOrder
+    section_code?: SortOrder
     section?: SectionOrderByWithRelationInput
     interactions?: InteractionOrderByRelationAggregateInput
+    malfunctions?: MalfunctionOrderByRelationAggregateInput
   }
 
   export type SystemWhereUniqueInput = Prisma.AtLeast<{
@@ -10050,9 +10187,10 @@ export namespace Prisma {
     name?: StringFilter<"System"> | string
     description?: StringFilter<"System"> | string
     durability?: IntFilter<"System"> | number
-    section_id?: IntFilter<"System"> | number
+    section_code?: EnumSectionCodeFilter<"System"> | $Enums.SectionCode
     section?: XOR<SectionScalarRelationFilter, SectionWhereInput>
     interactions?: InteractionListRelationFilter
+    malfunctions?: MalfunctionListRelationFilter
   }, "id">
 
   export type SystemOrderByWithAggregationInput = {
@@ -10060,7 +10198,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     durability?: SortOrder
-    section_id?: SortOrder
+    section_code?: SortOrder
     _count?: SystemCountOrderByAggregateInput
     _avg?: SystemAvgOrderByAggregateInput
     _max?: SystemMaxOrderByAggregateInput
@@ -10076,7 +10214,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"System"> | string
     description?: StringWithAggregatesFilter<"System"> | string
     durability?: IntWithAggregatesFilter<"System"> | number
-    section_id?: IntWithAggregatesFilter<"System"> | number
+    section_code?: EnumSectionCodeWithAggregatesFilter<"System"> | $Enums.SectionCode
   }
 
   export type InteractionWhereInput = {
@@ -10086,7 +10224,7 @@ export namespace Prisma {
     id?: IntFilter<"Interaction"> | number
     name?: StringFilter<"Interaction"> | string
     description?: StringFilter<"Interaction"> | string
-    skill?: EnumSkillsFilter<"Interaction"> | $Enums.Skills
+    skill?: EnumSkillsNullableFilter<"Interaction"> | $Enums.Skills | null
     type?: EnumInteractionTypeFilter<"Interaction"> | $Enums.InteractionType
     malfunction?: StringFilter<"Interaction"> | string
     system_id?: IntFilter<"Interaction"> | number
@@ -10099,7 +10237,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    skill?: SortOrder
+    skill?: SortOrderInput | SortOrder
     type?: SortOrder
     malfunction?: SortOrder
     system_id?: SortOrder
@@ -10115,7 +10253,7 @@ export namespace Prisma {
     NOT?: InteractionWhereInput | InteractionWhereInput[]
     name?: StringFilter<"Interaction"> | string
     description?: StringFilter<"Interaction"> | string
-    skill?: EnumSkillsFilter<"Interaction"> | $Enums.Skills
+    skill?: EnumSkillsNullableFilter<"Interaction"> | $Enums.Skills | null
     type?: EnumInteractionTypeFilter<"Interaction"> | $Enums.InteractionType
     malfunction?: StringFilter<"Interaction"> | string
     system_id?: IntFilter<"Interaction"> | number
@@ -10128,7 +10266,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    skill?: SortOrder
+    skill?: SortOrderInput | SortOrder
     type?: SortOrder
     malfunction?: SortOrder
     system_id?: SortOrder
@@ -10146,7 +10284,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Interaction"> | number
     name?: StringWithAggregatesFilter<"Interaction"> | string
     description?: StringWithAggregatesFilter<"Interaction"> | string
-    skill?: EnumSkillsWithAggregatesFilter<"Interaction"> | $Enums.Skills
+    skill?: EnumSkillsNullableWithAggregatesFilter<"Interaction"> | $Enums.Skills | null
     type?: EnumInteractionTypeWithAggregatesFilter<"Interaction"> | $Enums.InteractionType
     malfunction?: StringWithAggregatesFilter<"Interaction"> | string
     system_id?: IntWithAggregatesFilter<"Interaction"> | number
@@ -10213,9 +10351,11 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFilter<"Malfunction"> | $Enums.MalfunctionStatus
     started_at?: DateTimeFilter<"Malfunction"> | Date | string
     last_updated?: DateTimeFilter<"Malfunction"> | Date | string
+    system_id?: IntFilter<"Malfunction"> | number
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
     interaction?: XOR<InteractionScalarRelationFilter, InteractionWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    system?: XOR<SystemScalarRelationFilter, SystemWhereInput>
   }
 
   export type MalfunctionOrderByWithRelationInput = {
@@ -10226,9 +10366,11 @@ export namespace Prisma {
     status?: SortOrder
     started_at?: SortOrder
     last_updated?: SortOrder
+    system_id?: SortOrder
     event?: EventOrderByWithRelationInput
     interaction?: InteractionOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
+    system?: SystemOrderByWithRelationInput
   }
 
   export type MalfunctionWhereUniqueInput = Prisma.AtLeast<{
@@ -10242,9 +10384,11 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFilter<"Malfunction"> | $Enums.MalfunctionStatus
     started_at?: DateTimeFilter<"Malfunction"> | Date | string
     last_updated?: DateTimeFilter<"Malfunction"> | Date | string
+    system_id?: IntFilter<"Malfunction"> | number
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
     interaction?: XOR<InteractionScalarRelationFilter, InteractionWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    system?: XOR<SystemScalarRelationFilter, SystemWhereInput>
   }, "id">
 
   export type MalfunctionOrderByWithAggregationInput = {
@@ -10255,6 +10399,7 @@ export namespace Prisma {
     status?: SortOrder
     started_at?: SortOrder
     last_updated?: SortOrder
+    system_id?: SortOrder
     _count?: MalfunctionCountOrderByAggregateInput
     _avg?: MalfunctionAvgOrderByAggregateInput
     _max?: MalfunctionMaxOrderByAggregateInput
@@ -10273,6 +10418,7 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusWithAggregatesFilter<"Malfunction"> | $Enums.MalfunctionStatus
     started_at?: DateTimeWithAggregatesFilter<"Malfunction"> | Date | string
     last_updated?: DateTimeWithAggregatesFilter<"Malfunction"> | Date | string
+    system_id?: IntWithAggregatesFilter<"Malfunction"> | number
   }
 
   export type EventWhereInput = {
@@ -10418,63 +10564,79 @@ export namespace Prisma {
   }
 
   export type SectionCreateInput = {
+    code: $Enums.SectionCode
     name: string
     description: string
+    skill: $Enums.Skills
     systems?: SystemCreateNestedManyWithoutSectionInput
   }
 
   export type SectionUncheckedCreateInput = {
     id?: number
+    code: $Enums.SectionCode
     name: string
     description: string
+    skill: $Enums.Skills
     systems?: SystemUncheckedCreateNestedManyWithoutSectionInput
   }
 
   export type SectionUpdateInput = {
+    code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
     systems?: SystemUpdateManyWithoutSectionNestedInput
   }
 
   export type SectionUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
     systems?: SystemUncheckedUpdateManyWithoutSectionNestedInput
   }
 
   export type SectionCreateManyInput = {
     id?: number
+    code: $Enums.SectionCode
     name: string
     description: string
+    skill: $Enums.Skills
   }
 
   export type SectionUpdateManyMutationInput = {
+    code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
   }
 
   export type SectionUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
   }
 
   export type SystemCreateInput = {
     name: string
     description: string
-    durability: number
+    durability?: number
     section: SectionCreateNestedOneWithoutSystemsInput
     interactions?: InteractionCreateNestedManyWithoutSystemInput
+    malfunctions?: MalfunctionCreateNestedManyWithoutSystemInput
   }
 
   export type SystemUncheckedCreateInput = {
     id?: number
     name: string
     description: string
-    durability: number
-    section_id: number
+    durability?: number
+    section_code: $Enums.SectionCode
     interactions?: InteractionUncheckedCreateNestedManyWithoutSystemInput
+    malfunctions?: MalfunctionUncheckedCreateNestedManyWithoutSystemInput
   }
 
   export type SystemUpdateInput = {
@@ -10483,6 +10645,7 @@ export namespace Prisma {
     durability?: IntFieldUpdateOperationsInput | number
     section?: SectionUpdateOneRequiredWithoutSystemsNestedInput
     interactions?: InteractionUpdateManyWithoutSystemNestedInput
+    malfunctions?: MalfunctionUpdateManyWithoutSystemNestedInput
   }
 
   export type SystemUncheckedUpdateInput = {
@@ -10490,16 +10653,17 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     durability?: IntFieldUpdateOperationsInput | number
-    section_id?: IntFieldUpdateOperationsInput | number
+    section_code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
     interactions?: InteractionUncheckedUpdateManyWithoutSystemNestedInput
+    malfunctions?: MalfunctionUncheckedUpdateManyWithoutSystemNestedInput
   }
 
   export type SystemCreateManyInput = {
     id?: number
     name: string
     description: string
-    durability: number
-    section_id: number
+    durability?: number
+    section_code: $Enums.SectionCode
   }
 
   export type SystemUpdateManyMutationInput = {
@@ -10513,13 +10677,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     durability?: IntFieldUpdateOperationsInput | number
-    section_id?: IntFieldUpdateOperationsInput | number
+    section_code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
   }
 
   export type InteractionCreateInput = {
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     system: SystemCreateNestedOneWithoutInteractionsInput
@@ -10531,7 +10695,7 @@ export namespace Prisma {
     id?: number
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     system_id: number
@@ -10542,7 +10706,7 @@ export namespace Prisma {
   export type InteractionUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     system?: SystemUpdateOneRequiredWithoutInteractionsNestedInput
@@ -10554,7 +10718,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     system_id?: IntFieldUpdateOperationsInput | number
@@ -10566,7 +10730,7 @@ export namespace Prisma {
     id?: number
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     system_id: number
@@ -10575,7 +10739,7 @@ export namespace Prisma {
   export type InteractionUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
   }
@@ -10584,7 +10748,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     system_id?: IntFieldUpdateOperationsInput | number
@@ -10644,6 +10808,7 @@ export namespace Prisma {
     event: EventCreateNestedOneWithoutRequired_interactionsInput
     interaction: InteractionCreateNestedOneWithoutRequired_interactionsInput
     user: UserCreateNestedOneWithoutFinished_interactionsInput
+    system: SystemCreateNestedOneWithoutMalfunctionsInput
   }
 
   export type MalfunctionUncheckedCreateInput = {
@@ -10654,6 +10819,7 @@ export namespace Prisma {
     status?: $Enums.MalfunctionStatus
     started_at?: Date | string
     last_updated?: Date | string
+    system_id: number
   }
 
   export type MalfunctionUpdateInput = {
@@ -10663,6 +10829,7 @@ export namespace Prisma {
     event?: EventUpdateOneRequiredWithoutRequired_interactionsNestedInput
     interaction?: InteractionUpdateOneRequiredWithoutRequired_interactionsNestedInput
     user?: UserUpdateOneRequiredWithoutFinished_interactionsNestedInput
+    system?: SystemUpdateOneRequiredWithoutMalfunctionsNestedInput
   }
 
   export type MalfunctionUncheckedUpdateInput = {
@@ -10673,6 +10840,7 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+    system_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type MalfunctionCreateManyInput = {
@@ -10683,6 +10851,7 @@ export namespace Prisma {
     status?: $Enums.MalfunctionStatus
     started_at?: Date | string
     last_updated?: Date | string
+    system_id: number
   }
 
   export type MalfunctionUpdateManyMutationInput = {
@@ -10699,6 +10868,7 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+    system_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type EventCreateInput = {
@@ -10904,6 +11074,20 @@ export namespace Prisma {
     _max?: NestedEnumUserStatusFilter<$PrismaModel>
   }
 
+  export type EnumSectionCodeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SectionCode | EnumSectionCodeFieldRefInput<$PrismaModel>
+    in?: $Enums.SectionCode[] | ListEnumSectionCodeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SectionCode[] | ListEnumSectionCodeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSectionCodeFilter<$PrismaModel> | $Enums.SectionCode
+  }
+
+  export type EnumSkillsFilter<$PrismaModel = never> = {
+    equals?: $Enums.Skills | EnumSkillsFieldRefInput<$PrismaModel>
+    in?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel>
+    not?: NestedEnumSkillsFilter<$PrismaModel> | $Enums.Skills
+  }
+
   export type SystemListRelationFilter = {
     every?: SystemWhereInput
     some?: SystemWhereInput
@@ -10916,8 +11100,10 @@ export namespace Prisma {
 
   export type SectionCountOrderByAggregateInput = {
     id?: SortOrder
+    code?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    skill?: SortOrder
   }
 
   export type SectionAvgOrderByAggregateInput = {
@@ -10926,18 +11112,42 @@ export namespace Prisma {
 
   export type SectionMaxOrderByAggregateInput = {
     id?: SortOrder
+    code?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    skill?: SortOrder
   }
 
   export type SectionMinOrderByAggregateInput = {
     id?: SortOrder
+    code?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    skill?: SortOrder
   }
 
   export type SectionSumOrderByAggregateInput = {
     id?: SortOrder
+  }
+
+  export type EnumSectionCodeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SectionCode | EnumSectionCodeFieldRefInput<$PrismaModel>
+    in?: $Enums.SectionCode[] | ListEnumSectionCodeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SectionCode[] | ListEnumSectionCodeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSectionCodeWithAggregatesFilter<$PrismaModel> | $Enums.SectionCode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSectionCodeFilter<$PrismaModel>
+    _max?: NestedEnumSectionCodeFilter<$PrismaModel>
+  }
+
+  export type EnumSkillsWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Skills | EnumSkillsFieldRefInput<$PrismaModel>
+    in?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel>
+    not?: NestedEnumSkillsWithAggregatesFilter<$PrismaModel> | $Enums.Skills
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSkillsFilter<$PrismaModel>
+    _max?: NestedEnumSkillsFilter<$PrismaModel>
   }
 
   export type SectionScalarRelationFilter = {
@@ -10960,13 +11170,12 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     durability?: SortOrder
-    section_id?: SortOrder
+    section_code?: SortOrder
   }
 
   export type SystemAvgOrderByAggregateInput = {
     id?: SortOrder
     durability?: SortOrder
-    section_id?: SortOrder
   }
 
   export type SystemMaxOrderByAggregateInput = {
@@ -10974,7 +11183,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     durability?: SortOrder
-    section_id?: SortOrder
+    section_code?: SortOrder
   }
 
   export type SystemMinOrderByAggregateInput = {
@@ -10982,20 +11191,19 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     durability?: SortOrder
-    section_id?: SortOrder
+    section_code?: SortOrder
   }
 
   export type SystemSumOrderByAggregateInput = {
     id?: SortOrder
     durability?: SortOrder
-    section_id?: SortOrder
   }
 
-  export type EnumSkillsFilter<$PrismaModel = never> = {
-    equals?: $Enums.Skills | EnumSkillsFieldRefInput<$PrismaModel>
-    in?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel>
-    not?: NestedEnumSkillsFilter<$PrismaModel> | $Enums.Skills
+  export type EnumSkillsNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.Skills | EnumSkillsFieldRefInput<$PrismaModel> | null
+    in?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSkillsNullableFilter<$PrismaModel> | $Enums.Skills | null
   }
 
   export type EnumInteractionTypeFilter<$PrismaModel = never> = {
@@ -11014,6 +11222,11 @@ export namespace Prisma {
     every?: EventTemplateWhereInput
     some?: EventTemplateWhereInput
     none?: EventTemplateWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type EventTemplateOrderByRelationAggregateInput = {
@@ -11060,14 +11273,14 @@ export namespace Prisma {
     system_id?: SortOrder
   }
 
-  export type EnumSkillsWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Skills | EnumSkillsFieldRefInput<$PrismaModel>
-    in?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel>
-    not?: NestedEnumSkillsWithAggregatesFilter<$PrismaModel> | $Enums.Skills
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSkillsFilter<$PrismaModel>
-    _max?: NestedEnumSkillsFilter<$PrismaModel>
+  export type EnumSkillsNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Skills | EnumSkillsFieldRefInput<$PrismaModel> | null
+    in?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSkillsNullableWithAggregatesFilter<$PrismaModel> | $Enums.Skills | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSkillsNullableFilter<$PrismaModel>
+    _max?: NestedEnumSkillsNullableFilter<$PrismaModel>
   }
 
   export type EnumInteractionTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -11174,6 +11387,7 @@ export namespace Prisma {
     status?: SortOrder
     started_at?: SortOrder
     last_updated?: SortOrder
+    system_id?: SortOrder
   }
 
   export type MalfunctionAvgOrderByAggregateInput = {
@@ -11181,6 +11395,7 @@ export namespace Prisma {
     event_id?: SortOrder
     interaction_id?: SortOrder
     user_id?: SortOrder
+    system_id?: SortOrder
   }
 
   export type MalfunctionMaxOrderByAggregateInput = {
@@ -11191,6 +11406,7 @@ export namespace Prisma {
     status?: SortOrder
     started_at?: SortOrder
     last_updated?: SortOrder
+    system_id?: SortOrder
   }
 
   export type MalfunctionMinOrderByAggregateInput = {
@@ -11201,6 +11417,7 @@ export namespace Prisma {
     status?: SortOrder
     started_at?: SortOrder
     last_updated?: SortOrder
+    system_id?: SortOrder
   }
 
   export type MalfunctionSumOrderByAggregateInput = {
@@ -11208,6 +11425,7 @@ export namespace Prisma {
     event_id?: SortOrder
     interaction_id?: SortOrder
     user_id?: SortOrder
+    system_id?: SortOrder
   }
 
   export type EnumMalfunctionStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -11343,6 +11561,14 @@ export namespace Prisma {
     connect?: SystemWhereUniqueInput | SystemWhereUniqueInput[]
   }
 
+  export type EnumSectionCodeFieldUpdateOperationsInput = {
+    set?: $Enums.SectionCode
+  }
+
+  export type EnumSkillsFieldUpdateOperationsInput = {
+    set?: $Enums.Skills
+  }
+
   export type SystemUpdateManyWithoutSectionNestedInput = {
     create?: XOR<SystemCreateWithoutSectionInput, SystemUncheckedCreateWithoutSectionInput> | SystemCreateWithoutSectionInput[] | SystemUncheckedCreateWithoutSectionInput[]
     connectOrCreate?: SystemCreateOrConnectWithoutSectionInput | SystemCreateOrConnectWithoutSectionInput[]
@@ -11384,11 +11610,25 @@ export namespace Prisma {
     connect?: InteractionWhereUniqueInput | InteractionWhereUniqueInput[]
   }
 
+  export type MalfunctionCreateNestedManyWithoutSystemInput = {
+    create?: XOR<MalfunctionCreateWithoutSystemInput, MalfunctionUncheckedCreateWithoutSystemInput> | MalfunctionCreateWithoutSystemInput[] | MalfunctionUncheckedCreateWithoutSystemInput[]
+    connectOrCreate?: MalfunctionCreateOrConnectWithoutSystemInput | MalfunctionCreateOrConnectWithoutSystemInput[]
+    createMany?: MalfunctionCreateManySystemInputEnvelope
+    connect?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
+  }
+
   export type InteractionUncheckedCreateNestedManyWithoutSystemInput = {
     create?: XOR<InteractionCreateWithoutSystemInput, InteractionUncheckedCreateWithoutSystemInput> | InteractionCreateWithoutSystemInput[] | InteractionUncheckedCreateWithoutSystemInput[]
     connectOrCreate?: InteractionCreateOrConnectWithoutSystemInput | InteractionCreateOrConnectWithoutSystemInput[]
     createMany?: InteractionCreateManySystemInputEnvelope
     connect?: InteractionWhereUniqueInput | InteractionWhereUniqueInput[]
+  }
+
+  export type MalfunctionUncheckedCreateNestedManyWithoutSystemInput = {
+    create?: XOR<MalfunctionCreateWithoutSystemInput, MalfunctionUncheckedCreateWithoutSystemInput> | MalfunctionCreateWithoutSystemInput[] | MalfunctionUncheckedCreateWithoutSystemInput[]
+    connectOrCreate?: MalfunctionCreateOrConnectWithoutSystemInput | MalfunctionCreateOrConnectWithoutSystemInput[]
+    createMany?: MalfunctionCreateManySystemInputEnvelope
+    connect?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
   }
 
   export type SectionUpdateOneRequiredWithoutSystemsNestedInput = {
@@ -11413,6 +11653,20 @@ export namespace Prisma {
     deleteMany?: InteractionScalarWhereInput | InteractionScalarWhereInput[]
   }
 
+  export type MalfunctionUpdateManyWithoutSystemNestedInput = {
+    create?: XOR<MalfunctionCreateWithoutSystemInput, MalfunctionUncheckedCreateWithoutSystemInput> | MalfunctionCreateWithoutSystemInput[] | MalfunctionUncheckedCreateWithoutSystemInput[]
+    connectOrCreate?: MalfunctionCreateOrConnectWithoutSystemInput | MalfunctionCreateOrConnectWithoutSystemInput[]
+    upsert?: MalfunctionUpsertWithWhereUniqueWithoutSystemInput | MalfunctionUpsertWithWhereUniqueWithoutSystemInput[]
+    createMany?: MalfunctionCreateManySystemInputEnvelope
+    set?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
+    disconnect?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
+    delete?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
+    connect?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
+    update?: MalfunctionUpdateWithWhereUniqueWithoutSystemInput | MalfunctionUpdateWithWhereUniqueWithoutSystemInput[]
+    updateMany?: MalfunctionUpdateManyWithWhereWithoutSystemInput | MalfunctionUpdateManyWithWhereWithoutSystemInput[]
+    deleteMany?: MalfunctionScalarWhereInput | MalfunctionScalarWhereInput[]
+  }
+
   export type InteractionUncheckedUpdateManyWithoutSystemNestedInput = {
     create?: XOR<InteractionCreateWithoutSystemInput, InteractionUncheckedCreateWithoutSystemInput> | InteractionCreateWithoutSystemInput[] | InteractionUncheckedCreateWithoutSystemInput[]
     connectOrCreate?: InteractionCreateOrConnectWithoutSystemInput | InteractionCreateOrConnectWithoutSystemInput[]
@@ -11425,6 +11679,20 @@ export namespace Prisma {
     update?: InteractionUpdateWithWhereUniqueWithoutSystemInput | InteractionUpdateWithWhereUniqueWithoutSystemInput[]
     updateMany?: InteractionUpdateManyWithWhereWithoutSystemInput | InteractionUpdateManyWithWhereWithoutSystemInput[]
     deleteMany?: InteractionScalarWhereInput | InteractionScalarWhereInput[]
+  }
+
+  export type MalfunctionUncheckedUpdateManyWithoutSystemNestedInput = {
+    create?: XOR<MalfunctionCreateWithoutSystemInput, MalfunctionUncheckedCreateWithoutSystemInput> | MalfunctionCreateWithoutSystemInput[] | MalfunctionUncheckedCreateWithoutSystemInput[]
+    connectOrCreate?: MalfunctionCreateOrConnectWithoutSystemInput | MalfunctionCreateOrConnectWithoutSystemInput[]
+    upsert?: MalfunctionUpsertWithWhereUniqueWithoutSystemInput | MalfunctionUpsertWithWhereUniqueWithoutSystemInput[]
+    createMany?: MalfunctionCreateManySystemInputEnvelope
+    set?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
+    disconnect?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
+    delete?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
+    connect?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
+    update?: MalfunctionUpdateWithWhereUniqueWithoutSystemInput | MalfunctionUpdateWithWhereUniqueWithoutSystemInput[]
+    updateMany?: MalfunctionUpdateManyWithWhereWithoutSystemInput | MalfunctionUpdateManyWithWhereWithoutSystemInput[]
+    deleteMany?: MalfunctionScalarWhereInput | MalfunctionScalarWhereInput[]
   }
 
   export type SystemCreateNestedOneWithoutInteractionsInput = {
@@ -11459,8 +11727,8 @@ export namespace Prisma {
     connect?: MalfunctionWhereUniqueInput | MalfunctionWhereUniqueInput[]
   }
 
-  export type EnumSkillsFieldUpdateOperationsInput = {
-    set?: $Enums.Skills
+  export type NullableEnumSkillsFieldUpdateOperationsInput = {
+    set?: $Enums.Skills | null
   }
 
   export type EnumInteractionTypeFieldUpdateOperationsInput = {
@@ -11631,6 +11899,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type SystemCreateNestedOneWithoutMalfunctionsInput = {
+    create?: XOR<SystemCreateWithoutMalfunctionsInput, SystemUncheckedCreateWithoutMalfunctionsInput>
+    connectOrCreate?: SystemCreateOrConnectWithoutMalfunctionsInput
+    connect?: SystemWhereUniqueInput
+  }
+
   export type EnumMalfunctionStatusFieldUpdateOperationsInput = {
     set?: $Enums.MalfunctionStatus
   }
@@ -11661,6 +11935,14 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutFinished_interactionsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFinished_interactionsInput, UserUpdateWithoutFinished_interactionsInput>, UserUncheckedUpdateWithoutFinished_interactionsInput>
+  }
+
+  export type SystemUpdateOneRequiredWithoutMalfunctionsNestedInput = {
+    create?: XOR<SystemCreateWithoutMalfunctionsInput, SystemUncheckedCreateWithoutMalfunctionsInput>
+    connectOrCreate?: SystemCreateOrConnectWithoutMalfunctionsInput
+    upsert?: SystemUpsertWithoutMalfunctionsInput
+    connect?: SystemWhereUniqueInput
+    update?: XOR<XOR<SystemUpdateToOneWithWhereWithoutMalfunctionsInput, SystemUpdateWithoutMalfunctionsInput>, SystemUncheckedUpdateWithoutMalfunctionsInput>
   }
 
   export type EventTemplateCreateNestedOneWithoutEvent_templateInput = {
@@ -11822,6 +12104,13 @@ export namespace Prisma {
     _max?: NestedEnumUserStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumSectionCodeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SectionCode | EnumSectionCodeFieldRefInput<$PrismaModel>
+    in?: $Enums.SectionCode[] | ListEnumSectionCodeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SectionCode[] | ListEnumSectionCodeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSectionCodeFilter<$PrismaModel> | $Enums.SectionCode
+  }
+
   export type NestedEnumSkillsFilter<$PrismaModel = never> = {
     equals?: $Enums.Skills | EnumSkillsFieldRefInput<$PrismaModel>
     in?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel>
@@ -11829,11 +12118,14 @@ export namespace Prisma {
     not?: NestedEnumSkillsFilter<$PrismaModel> | $Enums.Skills
   }
 
-  export type NestedEnumInteractionTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.InteractionType | EnumInteractionTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.InteractionType[] | ListEnumInteractionTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InteractionType[] | ListEnumInteractionTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumInteractionTypeFilter<$PrismaModel> | $Enums.InteractionType
+  export type NestedEnumSectionCodeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SectionCode | EnumSectionCodeFieldRefInput<$PrismaModel>
+    in?: $Enums.SectionCode[] | ListEnumSectionCodeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SectionCode[] | ListEnumSectionCodeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSectionCodeWithAggregatesFilter<$PrismaModel> | $Enums.SectionCode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSectionCodeFilter<$PrismaModel>
+    _max?: NestedEnumSectionCodeFilter<$PrismaModel>
   }
 
   export type NestedEnumSkillsWithAggregatesFilter<$PrismaModel = never> = {
@@ -11844,6 +12136,41 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSkillsFilter<$PrismaModel>
     _max?: NestedEnumSkillsFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSkillsNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.Skills | EnumSkillsFieldRefInput<$PrismaModel> | null
+    in?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSkillsNullableFilter<$PrismaModel> | $Enums.Skills | null
+  }
+
+  export type NestedEnumInteractionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.InteractionType | EnumInteractionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InteractionType[] | ListEnumInteractionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InteractionType[] | ListEnumInteractionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInteractionTypeFilter<$PrismaModel> | $Enums.InteractionType
+  }
+
+  export type NestedEnumSkillsNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Skills | EnumSkillsFieldRefInput<$PrismaModel> | null
+    in?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.Skills[] | ListEnumSkillsFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSkillsNullableWithAggregatesFilter<$PrismaModel> | $Enums.Skills | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSkillsNullableFilter<$PrismaModel>
+    _max?: NestedEnumSkillsNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumInteractionTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -11921,6 +12248,7 @@ export namespace Prisma {
     last_updated?: Date | string
     event: EventCreateNestedOneWithoutRequired_interactionsInput
     interaction: InteractionCreateNestedOneWithoutRequired_interactionsInput
+    system: SystemCreateNestedOneWithoutMalfunctionsInput
   }
 
   export type MalfunctionUncheckedCreateWithoutUserInput = {
@@ -11930,6 +12258,7 @@ export namespace Prisma {
     status?: $Enums.MalfunctionStatus
     started_at?: Date | string
     last_updated?: Date | string
+    system_id: number
   }
 
   export type MalfunctionCreateOrConnectWithoutUserInput = {
@@ -11969,21 +12298,24 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFilter<"Malfunction"> | $Enums.MalfunctionStatus
     started_at?: DateTimeFilter<"Malfunction"> | Date | string
     last_updated?: DateTimeFilter<"Malfunction"> | Date | string
+    system_id?: IntFilter<"Malfunction"> | number
   }
 
   export type SystemCreateWithoutSectionInput = {
     name: string
     description: string
-    durability: number
+    durability?: number
     interactions?: InteractionCreateNestedManyWithoutSystemInput
+    malfunctions?: MalfunctionCreateNestedManyWithoutSystemInput
   }
 
   export type SystemUncheckedCreateWithoutSectionInput = {
     id?: number
     name: string
     description: string
-    durability: number
+    durability?: number
     interactions?: InteractionUncheckedCreateNestedManyWithoutSystemInput
+    malfunctions?: MalfunctionUncheckedCreateNestedManyWithoutSystemInput
   }
 
   export type SystemCreateOrConnectWithoutSectionInput = {
@@ -12020,18 +12352,22 @@ export namespace Prisma {
     name?: StringFilter<"System"> | string
     description?: StringFilter<"System"> | string
     durability?: IntFilter<"System"> | number
-    section_id?: IntFilter<"System"> | number
+    section_code?: EnumSectionCodeFilter<"System"> | $Enums.SectionCode
   }
 
   export type SectionCreateWithoutSystemsInput = {
+    code: $Enums.SectionCode
     name: string
     description: string
+    skill: $Enums.Skills
   }
 
   export type SectionUncheckedCreateWithoutSystemsInput = {
     id?: number
+    code: $Enums.SectionCode
     name: string
     description: string
+    skill: $Enums.Skills
   }
 
   export type SectionCreateOrConnectWithoutSystemsInput = {
@@ -12042,7 +12378,7 @@ export namespace Prisma {
   export type InteractionCreateWithoutSystemInput = {
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     possible_events?: EventTemplateCreateNestedManyWithoutAllowed_interactionsInput
@@ -12053,7 +12389,7 @@ export namespace Prisma {
     id?: number
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     possible_events?: EventTemplateUncheckedCreateNestedManyWithoutAllowed_interactionsInput
@@ -12070,6 +12406,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MalfunctionCreateWithoutSystemInput = {
+    status?: $Enums.MalfunctionStatus
+    started_at?: Date | string
+    last_updated?: Date | string
+    event: EventCreateNestedOneWithoutRequired_interactionsInput
+    interaction: InteractionCreateNestedOneWithoutRequired_interactionsInput
+    user: UserCreateNestedOneWithoutFinished_interactionsInput
+  }
+
+  export type MalfunctionUncheckedCreateWithoutSystemInput = {
+    id?: number
+    event_id: number
+    interaction_id: number
+    user_id: number
+    status?: $Enums.MalfunctionStatus
+    started_at?: Date | string
+    last_updated?: Date | string
+  }
+
+  export type MalfunctionCreateOrConnectWithoutSystemInput = {
+    where: MalfunctionWhereUniqueInput
+    create: XOR<MalfunctionCreateWithoutSystemInput, MalfunctionUncheckedCreateWithoutSystemInput>
+  }
+
+  export type MalfunctionCreateManySystemInputEnvelope = {
+    data: MalfunctionCreateManySystemInput | MalfunctionCreateManySystemInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SectionUpsertWithoutSystemsInput = {
     update: XOR<SectionUpdateWithoutSystemsInput, SectionUncheckedUpdateWithoutSystemsInput>
     create: XOR<SectionCreateWithoutSystemsInput, SectionUncheckedCreateWithoutSystemsInput>
@@ -12082,14 +12447,18 @@ export namespace Prisma {
   }
 
   export type SectionUpdateWithoutSystemsInput = {
+    code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
   }
 
   export type SectionUncheckedUpdateWithoutSystemsInput = {
     id?: IntFieldUpdateOperationsInput | number
+    code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
   }
 
   export type InteractionUpsertWithWhereUniqueWithoutSystemInput = {
@@ -12115,25 +12484,43 @@ export namespace Prisma {
     id?: IntFilter<"Interaction"> | number
     name?: StringFilter<"Interaction"> | string
     description?: StringFilter<"Interaction"> | string
-    skill?: EnumSkillsFilter<"Interaction"> | $Enums.Skills
+    skill?: EnumSkillsNullableFilter<"Interaction"> | $Enums.Skills | null
     type?: EnumInteractionTypeFilter<"Interaction"> | $Enums.InteractionType
     malfunction?: StringFilter<"Interaction"> | string
     system_id?: IntFilter<"Interaction"> | number
   }
 
+  export type MalfunctionUpsertWithWhereUniqueWithoutSystemInput = {
+    where: MalfunctionWhereUniqueInput
+    update: XOR<MalfunctionUpdateWithoutSystemInput, MalfunctionUncheckedUpdateWithoutSystemInput>
+    create: XOR<MalfunctionCreateWithoutSystemInput, MalfunctionUncheckedCreateWithoutSystemInput>
+  }
+
+  export type MalfunctionUpdateWithWhereUniqueWithoutSystemInput = {
+    where: MalfunctionWhereUniqueInput
+    data: XOR<MalfunctionUpdateWithoutSystemInput, MalfunctionUncheckedUpdateWithoutSystemInput>
+  }
+
+  export type MalfunctionUpdateManyWithWhereWithoutSystemInput = {
+    where: MalfunctionScalarWhereInput
+    data: XOR<MalfunctionUpdateManyMutationInput, MalfunctionUncheckedUpdateManyWithoutSystemInput>
+  }
+
   export type SystemCreateWithoutInteractionsInput = {
     name: string
     description: string
-    durability: number
+    durability?: number
     section: SectionCreateNestedOneWithoutSystemsInput
+    malfunctions?: MalfunctionCreateNestedManyWithoutSystemInput
   }
 
   export type SystemUncheckedCreateWithoutInteractionsInput = {
     id?: number
     name: string
     description: string
-    durability: number
-    section_id: number
+    durability?: number
+    section_code: $Enums.SectionCode
+    malfunctions?: MalfunctionUncheckedCreateNestedManyWithoutSystemInput
   }
 
   export type SystemCreateOrConnectWithoutInteractionsInput = {
@@ -12165,6 +12552,7 @@ export namespace Prisma {
     last_updated?: Date | string
     event: EventCreateNestedOneWithoutRequired_interactionsInput
     user: UserCreateNestedOneWithoutFinished_interactionsInput
+    system: SystemCreateNestedOneWithoutMalfunctionsInput
   }
 
   export type MalfunctionUncheckedCreateWithoutInteractionInput = {
@@ -12174,6 +12562,7 @@ export namespace Prisma {
     status?: $Enums.MalfunctionStatus
     started_at?: Date | string
     last_updated?: Date | string
+    system_id: number
   }
 
   export type MalfunctionCreateOrConnectWithoutInteractionInput = {
@@ -12202,6 +12591,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     durability?: IntFieldUpdateOperationsInput | number
     section?: SectionUpdateOneRequiredWithoutSystemsNestedInput
+    malfunctions?: MalfunctionUpdateManyWithoutSystemNestedInput
   }
 
   export type SystemUncheckedUpdateWithoutInteractionsInput = {
@@ -12209,7 +12599,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     durability?: IntFieldUpdateOperationsInput | number
-    section_id?: IntFieldUpdateOperationsInput | number
+    section_code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
+    malfunctions?: MalfunctionUncheckedUpdateManyWithoutSystemNestedInput
   }
 
   export type EventTemplateUpsertWithWhereUniqueWithoutAllowed_interactionsInput = {
@@ -12256,7 +12647,7 @@ export namespace Prisma {
   export type InteractionCreateWithoutPossible_eventsInput = {
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     system: SystemCreateNestedOneWithoutInteractionsInput
@@ -12267,7 +12658,7 @@ export namespace Prisma {
     id?: number
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     system_id: number
@@ -12360,7 +12751,7 @@ export namespace Prisma {
   export type InteractionCreateWithoutRequired_interactionsInput = {
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     system: SystemCreateNestedOneWithoutInteractionsInput
@@ -12371,7 +12762,7 @@ export namespace Prisma {
     id?: number
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
     system_id: number
@@ -12413,6 +12804,28 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutFinished_interactionsInput, UserUncheckedCreateWithoutFinished_interactionsInput>
   }
 
+  export type SystemCreateWithoutMalfunctionsInput = {
+    name: string
+    description: string
+    durability?: number
+    section: SectionCreateNestedOneWithoutSystemsInput
+    interactions?: InteractionCreateNestedManyWithoutSystemInput
+  }
+
+  export type SystemUncheckedCreateWithoutMalfunctionsInput = {
+    id?: number
+    name: string
+    description: string
+    durability?: number
+    section_code: $Enums.SectionCode
+    interactions?: InteractionUncheckedCreateNestedManyWithoutSystemInput
+  }
+
+  export type SystemCreateOrConnectWithoutMalfunctionsInput = {
+    where: SystemWhereUniqueInput
+    create: XOR<SystemCreateWithoutMalfunctionsInput, SystemUncheckedCreateWithoutMalfunctionsInput>
+  }
+
   export type EventUpsertWithoutRequired_interactionsInput = {
     update: XOR<EventUpdateWithoutRequired_interactionsInput, EventUncheckedUpdateWithoutRequired_interactionsInput>
     create: XOR<EventCreateWithoutRequired_interactionsInput, EventUncheckedCreateWithoutRequired_interactionsInput>
@@ -12449,7 +12862,7 @@ export namespace Prisma {
   export type InteractionUpdateWithoutRequired_interactionsInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     system?: SystemUpdateOneRequiredWithoutInteractionsNestedInput
@@ -12460,7 +12873,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     system_id?: IntFieldUpdateOperationsInput | number
@@ -12503,6 +12916,34 @@ export namespace Prisma {
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   }
 
+  export type SystemUpsertWithoutMalfunctionsInput = {
+    update: XOR<SystemUpdateWithoutMalfunctionsInput, SystemUncheckedUpdateWithoutMalfunctionsInput>
+    create: XOR<SystemCreateWithoutMalfunctionsInput, SystemUncheckedCreateWithoutMalfunctionsInput>
+    where?: SystemWhereInput
+  }
+
+  export type SystemUpdateToOneWithWhereWithoutMalfunctionsInput = {
+    where?: SystemWhereInput
+    data: XOR<SystemUpdateWithoutMalfunctionsInput, SystemUncheckedUpdateWithoutMalfunctionsInput>
+  }
+
+  export type SystemUpdateWithoutMalfunctionsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    durability?: IntFieldUpdateOperationsInput | number
+    section?: SectionUpdateOneRequiredWithoutSystemsNestedInput
+    interactions?: InteractionUpdateManyWithoutSystemNestedInput
+  }
+
+  export type SystemUncheckedUpdateWithoutMalfunctionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    durability?: IntFieldUpdateOperationsInput | number
+    section_code?: EnumSectionCodeFieldUpdateOperationsInput | $Enums.SectionCode
+    interactions?: InteractionUncheckedUpdateManyWithoutSystemNestedInput
+  }
+
   export type EventTemplateCreateWithoutEvent_templateInput = {
     name: string
     cause: $Enums.EventCause
@@ -12527,6 +12968,7 @@ export namespace Prisma {
     last_updated?: Date | string
     interaction: InteractionCreateNestedOneWithoutRequired_interactionsInput
     user: UserCreateNestedOneWithoutFinished_interactionsInput
+    system: SystemCreateNestedOneWithoutMalfunctionsInput
   }
 
   export type MalfunctionUncheckedCreateWithoutEventInput = {
@@ -12536,6 +12978,7 @@ export namespace Prisma {
     status?: $Enums.MalfunctionStatus
     started_at?: Date | string
     last_updated?: Date | string
+    system_id: number
   }
 
   export type MalfunctionCreateOrConnectWithoutEventInput = {
@@ -12595,6 +13038,7 @@ export namespace Prisma {
     status?: $Enums.MalfunctionStatus
     started_at?: Date | string
     last_updated?: Date | string
+    system_id: number
   }
 
   export type MalfunctionUpdateWithoutUserInput = {
@@ -12603,6 +13047,7 @@ export namespace Prisma {
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutRequired_interactionsNestedInput
     interaction?: InteractionUpdateOneRequiredWithoutRequired_interactionsNestedInput
+    system?: SystemUpdateOneRequiredWithoutMalfunctionsNestedInput
   }
 
   export type MalfunctionUncheckedUpdateWithoutUserInput = {
@@ -12612,6 +13057,7 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+    system_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type MalfunctionUncheckedUpdateManyWithoutUserInput = {
@@ -12621,13 +13067,14 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+    system_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type SystemCreateManySectionInput = {
     id?: number
     name: string
     description: string
-    durability: number
+    durability?: number
   }
 
   export type SystemUpdateWithoutSectionInput = {
@@ -12635,6 +13082,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     durability?: IntFieldUpdateOperationsInput | number
     interactions?: InteractionUpdateManyWithoutSystemNestedInput
+    malfunctions?: MalfunctionUpdateManyWithoutSystemNestedInput
   }
 
   export type SystemUncheckedUpdateWithoutSectionInput = {
@@ -12643,6 +13091,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     durability?: IntFieldUpdateOperationsInput | number
     interactions?: InteractionUncheckedUpdateManyWithoutSystemNestedInput
+    malfunctions?: MalfunctionUncheckedUpdateManyWithoutSystemNestedInput
   }
 
   export type SystemUncheckedUpdateManyWithoutSectionInput = {
@@ -12656,15 +13105,25 @@ export namespace Prisma {
     id?: number
     name: string
     description: string
-    skill: $Enums.Skills
+    skill?: $Enums.Skills | null
     type: $Enums.InteractionType
     malfunction: string
+  }
+
+  export type MalfunctionCreateManySystemInput = {
+    id?: number
+    event_id: number
+    interaction_id: number
+    user_id: number
+    status?: $Enums.MalfunctionStatus
+    started_at?: Date | string
+    last_updated?: Date | string
   }
 
   export type InteractionUpdateWithoutSystemInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     possible_events?: EventTemplateUpdateManyWithoutAllowed_interactionsNestedInput
@@ -12675,7 +13134,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     possible_events?: EventTemplateUncheckedUpdateManyWithoutAllowed_interactionsNestedInput
@@ -12686,9 +13145,38 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MalfunctionUpdateWithoutSystemInput = {
+    status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
+    started_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutRequired_interactionsNestedInput
+    interaction?: InteractionUpdateOneRequiredWithoutRequired_interactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutFinished_interactionsNestedInput
+  }
+
+  export type MalfunctionUncheckedUpdateWithoutSystemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    event_id?: IntFieldUpdateOperationsInput | number
+    interaction_id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
+    started_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MalfunctionUncheckedUpdateManyWithoutSystemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    event_id?: IntFieldUpdateOperationsInput | number
+    interaction_id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
+    started_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MalfunctionCreateManyInteractionInput = {
@@ -12698,6 +13186,7 @@ export namespace Prisma {
     status?: $Enums.MalfunctionStatus
     started_at?: Date | string
     last_updated?: Date | string
+    system_id: number
   }
 
   export type EventTemplateUpdateWithoutAllowed_interactionsInput = {
@@ -12725,6 +13214,7 @@ export namespace Prisma {
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutRequired_interactionsNestedInput
     user?: UserUpdateOneRequiredWithoutFinished_interactionsNestedInput
+    system?: SystemUpdateOneRequiredWithoutMalfunctionsNestedInput
   }
 
   export type MalfunctionUncheckedUpdateWithoutInteractionInput = {
@@ -12734,6 +13224,7 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+    system_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type MalfunctionUncheckedUpdateManyWithoutInteractionInput = {
@@ -12743,6 +13234,7 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+    system_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type EventCreateManyEvent_templateInput = {
@@ -12753,7 +13245,7 @@ export namespace Prisma {
   export type InteractionUpdateWithoutPossible_eventsInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     system?: SystemUpdateOneRequiredWithoutInteractionsNestedInput
@@ -12764,7 +13256,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     system_id?: IntFieldUpdateOperationsInput | number
@@ -12775,7 +13267,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    skill?: EnumSkillsFieldUpdateOperationsInput | $Enums.Skills
+    skill?: NullableEnumSkillsFieldUpdateOperationsInput | $Enums.Skills | null
     type?: EnumInteractionTypeFieldUpdateOperationsInput | $Enums.InteractionType
     malfunction?: StringFieldUpdateOperationsInput | string
     system_id?: IntFieldUpdateOperationsInput | number
@@ -12804,6 +13296,7 @@ export namespace Prisma {
     status?: $Enums.MalfunctionStatus
     started_at?: Date | string
     last_updated?: Date | string
+    system_id: number
   }
 
   export type MalfunctionUpdateWithoutEventInput = {
@@ -12812,6 +13305,7 @@ export namespace Prisma {
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
     interaction?: InteractionUpdateOneRequiredWithoutRequired_interactionsNestedInput
     user?: UserUpdateOneRequiredWithoutFinished_interactionsNestedInput
+    system?: SystemUpdateOneRequiredWithoutMalfunctionsNestedInput
   }
 
   export type MalfunctionUncheckedUpdateWithoutEventInput = {
@@ -12821,6 +13315,7 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+    system_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type MalfunctionUncheckedUpdateManyWithoutEventInput = {
@@ -12830,6 +13325,7 @@ export namespace Prisma {
     status?: EnumMalfunctionStatusFieldUpdateOperationsInput | $Enums.MalfunctionStatus
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_updated?: DateTimeFieldUpdateOperationsInput | Date | string
+    system_id?: IntFieldUpdateOperationsInput | number
   }
 
 
