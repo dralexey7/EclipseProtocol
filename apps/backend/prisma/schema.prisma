@@ -13,3 +13,125 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id                    Int           @id @default(autoincrement())
+  name                  String
+  profession            String
+  fraction              Fraction
+  navigation_skill      Int
+  military_skill        Int
+  engineering_skill     Int
+  bureaucracy_skill     Int
+  service_skill         Int
+  status                UserStatus    @default(INACTIVE)
+  finished_interactions Malfunction[]
+}
+
+// -------------------------------- Models: Описание корабля --------------------------------
+
+model Section {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  systems     System[]
+  skill       Skills
+}
+
+model System {
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String
+  durability   Int
+  section      Section       @relation(fields: [section_id], references: [id])
+  section_id   Int
+  interactions Interaction[]
+  malfunctions Malfunction[]
+}
+
+model Interaction {
+  id                    Int             @id @default(autoincrement())
+  name                  String
+  description           String
+  skill                 Skills?
+  type                  InteractionType
+  malfunction           String
+  system                System          @relation(fields: [system_id], references: [id])
+  system_id             Int
+  possible_events       EventTemplate[]
+  required_interactions Malfunction[]
+}
+
+// -------------------------------- Models: События --------------------------------
+
+model EventTemplate {
+  id                   Int           @id @default(autoincrement())
+  name                 String
+  allowed_interactions Interaction[]
+  cause                EventCause
+  event_template       Event[]
+}
+
+model Malfunction {
+  id             Int               @id @default(autoincrement())
+  event          Event             @relation(fields: [event_id], references: [id])
+  event_id       Int
+  interaction    Interaction       @relation(fields: [interaction_id], references: [id])
+  interaction_id Int
+  user           User              @relation(fields: [user_id], references: [id])
+  user_id        Int
+  status         MalfunctionStatus @default(NOT_STARTED)
+  started_at     DateTime          @default(now())
+  last_updated   DateTime          @updatedAt
+  system         System            @relation(fields: [system_id], references: [id])
+  system_id      Int
+}
+
+model Event {
+  id                    Int           @id @default(autoincrement())
+  event_template        EventTemplate @relation(fields: [event_template_id], references: [id])
+  event_template_id     Int
+  required_interactions Malfunction[]
+  started_at            DateTime      @default(now())
+}
+
+// -------------------------------- Enums --------------------------------
+
+enum MalfunctionStatus {
+  NOT_STARTED
+  FINISHED
+  IN_PROGRESS
+}
+
+enum EventCause {
+  SABOTAGE
+  ACCIDENT
+}
+
+enum UserStatus {
+  ALIVE
+  GHOST
+  INACTIVE
+}
+
+enum Fraction {
+  ALLIANCE
+  REBELS
+  CULT
+}
+
+enum Skills {
+  NAVIGATION
+  MILITARY
+  ENGINEERING
+  BUREAUCRACY
+  SERVICE
+}
+
+enum InteractionType {
+  POSITIVE
+  NEGATIVE
+  GHOST
+  CULT
+  SUPPORT
+}
